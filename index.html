@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Le Brunch Secret</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Figtree:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: une carte de restaurant étroite, centrée, quatre services empilés, puis le bon de commande. */
+:root {
+  --paper: #fbf3ef;
+  --card: #fffaf7;
+  --ink: #1d3a33;
+  --muted: #6b7f78;
+  --rose: #b8485f;
+  --gold: #a8844c;
+  --line: #e7d8d1;
+  --sel: #f6e1e4;
+  --display: "Italiana", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Figtree", system-ui, -apple-system, sans-serif;
+  --mono: "DM Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #10201c; --card: #172b26; --ink: #f2e8e3; --muted: #9db0a9;
+    --rose: #e58a9c; --gold: #d2b07a; --line: #2c443d; --sel: #2d2a2e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #10201c; --card: #172b26; --ink: #f2e8e3; --muted: #9db0a9;
+  --rose: #e58a9c; --gold: #d2b07a; --line: #2c443d; --sel: #2d2a2e; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px;
+}
+.wrap { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+
+header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 8px; }
+.eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(44px, 12vw, 64px); line-height: 1; margin: 0; letter-spacing: .01em; text-wrap: balance; }
+.tag { color: var(--muted); margin: 0; max-width: 34ch; text-wrap: balance; }
+.orn { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 260px; color: var(--gold); }
+.orn::before, .orn::after { content: ""; flex: 1; height: 1px; background: var(--gold); opacity: .55; }
+
+.formule {
+  border: 1px solid var(--gold); border-radius: 2px; padding: 14px 18px; text-align: center;
+  display: flex; flex-direction: column; gap: 4px; background: var(--card);
+}
+.formule b { font-family: var(--display); font-weight: 400; font-size: 24px; }
+.formule span { color: var(--muted); font-size: 14.5px; }
+
+section { display: flex; flex-direction: column; gap: 14px; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 30px; margin: 0; line-height: 1.1; }
+.sec-head small { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { position: relative; display: block; cursor: pointer; }
+.opt input { position: absolute; opacity: 0; inset: 0; pointer-events: none; }
+.opt-body {
+  display: grid; grid-template-columns: 22px 1fr auto; gap: 4px 12px; align-items: start;
+  padding: 14px 14px 14px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--card);
+  transition: border-color .15s, background .15s;
+}
+.mark { width: 18px; height: 18px; margin-top: 4px; border-radius: 50%; border: 1.5px solid var(--muted); display: grid; place-items: center; }
+.mark::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--rose); transform: scale(0); transition: transform .15s; }
+.opt-name { font-weight: 600; font-size: 17px; line-height: 1.3; min-width: 0; }
+.price { font-family: var(--mono); font-size: 12.5px; color: var(--gold); white-space: nowrap; padding-top: 3px; }
+.desc { grid-column: 2 / 4; color: var(--muted); font-size: 14.5px; min-width: 0; }
+.opt input:checked + .opt-body { border-color: var(--rose); background: var(--sel); }
+.opt input:checked + .opt-body .mark { border-color: var(--rose); }
+.opt input:checked + .opt-body .mark::after { transform: scale(1); }
+.opt input:focus-visible + .opt-body { outline: 2px solid var(--rose); outline-offset: 2px; }
+
+.extras { grid-column: 2 / 4; display: none; flex-wrap: wrap; gap: 8px; padding-top: 8px; }
+.opt input:checked + .opt-body .extras { display: flex; }
+.chip { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); cursor: pointer; }
+.chip input { accent-color: var(--rose); width: 16px; height: 16px; margin: 0; }
+
+.note { display: flex; flex-direction: column; gap: 8px; }
+.note label { font-family: var(--display); font-size: 24px; }
+textarea {
+  font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+  padding: 12px; min-height: 84px; resize: vertical; width: 100%;
+}
+textarea:focus-visible { outline: 2px solid var(--rose); outline-offset: 1px; }
+
+.send { display: flex; flex-direction: column; gap: 10px; align-items: stretch; }
+.btn {
+  font: 600 16px/1 var(--body); letter-spacing: .04em; cursor: pointer;
+  padding: 17px 20px; border-radius: 4px; border: 0; background: var(--ink); color: var(--paper);
+}
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.hint { text-align: center; font-size: 13.5px; color: var(--muted); margin: 0; }
+
+/* Ticket */
+.ticket {
+  background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 24px 20px;
+  display: flex; flex-direction: column; gap: 16px; font-family: var(--mono); font-size: 14px;
+  animation: rise .5s ease both;
+}
+.ticket h2 { font-family: var(--display); font-size: 34px; text-align: center; }
+.t-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; color: var(--muted); font-size: 12.5px; border-block: 1px dashed var(--line); padding-block: 10px; }
+.t-lines { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.t-lines li { display: grid; grid-template-columns: 1fr; gap: 1px; }
+.t-lines li span { color: var(--muted); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; }
+.t-lines li b { font-weight: 500; font-size: 15px; }
+.t-note { border-top: 1px dashed var(--line); padding-top: 12px; white-space: pre-wrap; font-family: var(--body); }
+.t-status { text-align: center; font-family: var(--body); font-size: 15px; padding: 12px; border-radius: 4px; background: var(--sel); }
+@keyframes rise { from { transform: translateY(12px); opacity: .0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ticket { animation: none; } .mark::after, .opt-body { transition: none; } }
+
+/* Cuisine (visible seulement pour le chef) */
+.kitchen { border-top: 1px solid var(--line); padding-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+.kitchen h2 { font-size: 26px; }
+.k-empty { color: var(--muted); font-size: 14.5px; margin: 0; }
+.k-order { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--rose); border-radius: 4px; padding: 12px 14px; font-size: 14.5px; display: flex; flex-direction: column; gap: 4px; }
+.k-order time { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+footer { text-align: center; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Ouvert ce matin seulement</div>
+    <h1>Le Brunch Secret</h1>
+    <div class="orn">✦</div>
+    <p class="tag">Une seule table, une seule cliente. Le chef cuisine pour toi, rien que pour toi.</p>
+  </header>
+
+  <div class="formule">
+    <b>La Formule de la Maison</b>
+    <span>1 boisson chaude · 1 boisson fraîche · 1 salé · 1 sucré</span>
+    <span class="price">4 bisous</span>
+  </div>
+
+  <form id="order" novalidate>
+    <div class="wrap" style="gap:36px">
+      <section>
+        <div class="sec-head"><h2>Boissons chaudes</h2><small>au choix</small></div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="chaud" id="chaud-choco" value="Chocolat Surprise">
+            <div class="opt-body"><span class="mark"></span><span class="opt-name">Chocolat Surprise</span><span class="price">1 bisou</span>
+              <span class="desc">Chocolat chaud maison au chocolat noir, dôme de chantilly, copeaux de chocolat. Et une surprise tout au fond de la tasse.</span></div></label>
+          <label class="opt"><input type="radio" name="chaud" id="chaud-white" value="White Coffee">
+            <div class="opt-body"><span class="mark"></span><span class="opt-name">White Coffee</span><span class="price">1 bisou</span>
+              <span class="desc">La recette secrète du chef : un café tout doux, crémeux et réconfortant.</span></div></label>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head"><h2>Boissons fraîches</h2><small>grand format</small></div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="frais" id="frais-classique" value="Iced Latte Classique">
+            <div class="opt-body"><span class="mark"></span><span class="opt-name">Iced Latte Classique</span><span class="price">1 bisou</span>
+              <span class="desc">Le grand, le vrai. Double espresso, lait frais, sirop vanille, plein de glaçons.</span></div></label>
+          <label class="opt"><input type="radio" name="frais" id="frais-tiramisu" value="Iced Latte Tiramisu">
+            <div class="opt-body"><span class="mark"></span><span class="opt-name">Iced Latte Tiramisu</span><span class="price">1 bisou</span>
+              <span class="desc">Iced latte coiffé d'une mousse au mascarpone, voile de cacao et biscuit cuillère.</span></div></label>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head"><h2>Salé</h2><small>assiette du chef</small></div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="sale" id="sale-saumon" value="Le Saumon du Chef">
+            <div class="opt-body"><span class="mark"></span><span class="opt-name">Le Saumon du Chef</span><span class="price">1 bisou</span>
+              <span class="desc">Pavé de saumon bien grillé sur avocat écrasé au citron, burrata crémeuse, deux triangles de brioche toastée, roquette et zeste de citron.</span></div></label>
+          <label class="opt"><input type="radio" name="sale" id="sale-italo" value="L'Italo-Nordique">
+            <div class="opt-body"><span class="mark"></span><span class="opt-name">L'Italo-Nordique</span><span class="price">1 bisou</span>
+              <span class="desc">Pain complet toasté au pesto, mozzarella di bufala, tomates cerises, roses de saumon fumé, roquette, basilic et crème de balsamique.</span></div></label>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-head"><h2>Sucré</h2><small>pour finir</small></div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="sucre" id="sucre-croissant" value="Croissant Gourmand">
+            <div class="opt-body"><span class="mark"></span><span class="opt-name">Croissant Gourmand</span><span class="price">1 bisou</span>
+              <span class="desc">Croissant tiède et croustillant, nappé de coulis de chocolat maison.</span>
+              <span class="extras">
+                <label class="chip"><input type="checkbox" id="x-glace" name="extra" value="glace vanille" checked> Glace vanille</label>
+                <label class="chip"><input type="checkbox" id="x-chantilly" name="extra" value="chantilly" checked> Chantilly</label>
+              </span></div></label>
+          <label class="opt"><input type="radio" name="sucre" id="sucre-brioche" value="Brioche Perdue">
+            <div class="opt-body"><span class="mark"></span><span class="opt-name">Brioche Perdue</span><span class="price">1 bisou</span>
+              <span class="desc">Épaisse tranche de brioche dorée au beurre, filet de caramel beurre salé, fruits rouges, boule de glace vanille.</span></div></label>
+        </div>
+      </section>
+
+      <div class="note">
+        <label for="note">Un mot pour le chef</label>
+        <textarea id="note" name="note" placeholder="Une envie, une précision, un compliment…"></textarea>
+      </div>
+
+      <div class="send">
+        <button class="btn" type="submit" id="submit" disabled>Voir ma commande</button>
+        <p class="hint" id="hint">Choisis un plat dans chaque service.</p>
+      </div>
+    </div>
+  </form>
+
+  <div id="ticket-zone" hidden></div>
+
+  <footer>Le Brunch Secret · Service à table · Pourboire en câlins accepté</footer>
+</div>
+
+<script>
+(function () {
+  const form = document.getElementById("order");
+  const btn = document.getElementById("submit");
+  const hint = document.getElementById("hint");
+  const zone = document.getElementById("ticket-zone");
+  const groups = [["chaud", "Boisson chaude"], ["frais", "Boisson fraîche"], ["sale", "Salé"], ["sucre", "Sucré"]];
+
+  function val(name) { const el = form.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : null; }
+
+  function read() {
+    const o = {};
+    groups.forEach(([k]) => { o[k] = val(k); });
+    if (o.sucre === "Croissant Gourmand") {
+      const ex = [...form.querySelectorAll('input[name="extra"]:checked')].map(e => e.value);
+      o.sucre += ex.length ? " avec " + ex.join(" et ") : " (nature)";
+    }
+    o.note = document.getElementById("note").value.trim();
+    return o;
+  }
+
+  function refresh() {
+    const missing = groups.filter(([k]) => !val(k)).length;
+    btn.disabled = missing > 0;
+    hint.textContent = missing ? (missing === 1 ? "Plus qu'un service à choisir." : "Choisis un plat dans chaque service.") : "Le chef est prêt.";
+  }
+  form.addEventListener("change", refresh);
+
+  function esc(s) { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+  function hhmm(d) { return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }); }
+
+  function renderTicket(o, when) {
+    zone.innerHTML =
+      '<div class="ticket">' +
+        '<div class="eyebrow" style="text-align:center">Bon de commande</div>' +
+        '<h2>Merci !</h2>' +
+        '<div class="t-meta"><span>Table n°1</span><span>Couverts : 1</span><span>' + hhmm(when) + '</span></div>' +
+        '<ul class="t-lines">' +
+          groups.map(([k, label]) => '<li><span>' + label + '</span><b>' + esc(o[k]) + '</b></li>').join("") +
+        '</ul>' +
+        (o.note ? '<div class="t-note">« ' + esc(o.note) + ' »</div>' : "") +
+        '<div class="t-status">Annonce ta commande au chef, il s\'occupe de tout.</div>' +
+        '<button class="btn ghost" type="button" id="again">Modifier ma commande</button>' +
+      '</div>';
+    form.hidden = true;
+    zone.hidden = false;
+    zone.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    document.getElementById("again").addEventListener("click", () => { zone.hidden = true; form.hidden = false; });
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (btn.disabled) return;
+    renderTicket(read(), new Date());
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>
