@@ -69,8 +69,8 @@ h2 { font-family: var(--display); font-weight: 400; font-size: 30px; margin: 0; 
   padding: 14px 14px 14px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--card);
   transition: border-color .15s, background .15s;
 }
-.mark { width: 18px; height: 18px; margin-top: 4px; border-radius: 50%; border: 1.5px solid var(--muted); display: grid; place-items: center; }
-.mark::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--rose); transform: scale(0); transition: transform .15s; }
+.mark { width: 18px; height: 18px; margin-top: 4px; border-radius: 4px; border: 1.5px solid var(--muted); display: grid; place-items: center; }
+.mark::after { content: ""; width: 10px; height: 10px; border-radius: 2px; background: var(--rose); transform: scale(0); transition: transform .15s; }
 .opt-name { font-weight: 600; font-size: 17px; line-height: 1.3; min-width: 0; }
 .price { font-family: var(--mono); font-size: 12.5px; color: var(--gold); white-space: nowrap; padding-top: 3px; }
 .desc { grid-column: 2 / 4; color: var(--muted); font-size: 14.5px; min-width: 0; }
@@ -79,8 +79,8 @@ h2 { font-family: var(--display); font-weight: 400; font-size: 30px; margin: 0; 
 .opt input:checked + .opt-body .mark::after { transform: scale(1); }
 .opt input:focus-visible + .opt-body { outline: 2px solid var(--rose); outline-offset: 2px; }
 
-.extras { grid-column: 2 / 4; display: none; flex-wrap: wrap; gap: 8px; padding-top: 8px; }
-.opt input:checked + .opt-body .extras { display: flex; }
+.extras { display: none; flex-wrap: wrap; gap: 8px; margin-top: -2px; padding-left: 46px; }
+.opt:has(input:checked) + .extras { display: flex; }
 .chip { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); cursor: pointer; }
 .chip input { accent-color: var(--rose); width: 16px; height: 16px; margin: 0; }
 
@@ -141,8 +141,8 @@ footer { text-align: center; color: var(--muted); font-size: 13px; }
 
   <div class="formule">
     <b>La Formule de la Maison</b>
-    <span>1 boisson chaude · 1 boisson fraîche · 1 salé · 1 sucré</span>
-    <span class="price">4 bisous</span>
+    <span>Prends tout ce qui te fait envie : un, deux, ou rien dans un service. Aucune limite.</span>
+    <span class="price">1 bisou par plat</span>
   </div>
 
   <form id="order" novalidate>
@@ -150,10 +150,10 @@ footer { text-align: center; color: var(--muted); font-size: 13px; }
       <section>
         <div class="sec-head"><h2>Boissons chaudes</h2><small>au choix</small></div>
         <div class="opts">
-          <label class="opt"><input type="radio" name="chaud" id="chaud-choco" value="Chocolat Surprise">
+          <label class="opt"><input type="checkbox" name="chaud" id="chaud-choco" value="Chocolat Surprise">
             <div class="opt-body"><span class="mark"></span><span class="opt-name">Chocolat Surprise</span><span class="price">1 bisou</span>
               <span class="desc">Chocolat chaud maison au chocolat noir, dôme de chantilly, copeaux de chocolat. Et une surprise tout au fond de la tasse.</span></div></label>
-          <label class="opt"><input type="radio" name="chaud" id="chaud-white" value="White Coffee">
+          <label class="opt"><input type="checkbox" name="chaud" id="chaud-white" value="White Coffee">
             <div class="opt-body"><span class="mark"></span><span class="opt-name">White Coffee</span><span class="price">1 bisou</span>
               <span class="desc">La recette secrète du chef : un café tout doux, crémeux et réconfortant.</span></div></label>
         </div>
@@ -162,10 +162,10 @@ footer { text-align: center; color: var(--muted); font-size: 13px; }
       <section>
         <div class="sec-head"><h2>Boissons fraîches</h2><small>grand format</small></div>
         <div class="opts">
-          <label class="opt"><input type="radio" name="frais" id="frais-classique" value="Iced Latte Classique">
+          <label class="opt"><input type="checkbox" name="frais" id="frais-classique" value="Iced Latte Classique">
             <div class="opt-body"><span class="mark"></span><span class="opt-name">Iced Latte Classique</span><span class="price">1 bisou</span>
               <span class="desc">Le grand, le vrai. Double espresso, lait frais, sirop vanille, plein de glaçons.</span></div></label>
-          <label class="opt"><input type="radio" name="frais" id="frais-speculos" value="Iced Latte Speculos">
+          <label class="opt"><input type="checkbox" name="frais" id="frais-speculos" value="Iced Latte Speculos">
             <div class="opt-body"><span class="mark"></span><span class="opt-name">Iced Latte Speculos</span><span class="price">1 bisou</span>
               <span class="desc">Iced latte coiffé d'une mousse au mascarpone, voile de poudre de speculos et speculos.</span></div></label>
         </div>
@@ -174,10 +174,10 @@ footer { text-align: center; color: var(--muted); font-size: 13px; }
       <section>
         <div class="sec-head"><h2>Salé</h2><small>assiette du chef</small></div>
         <div class="opts">
-          <label class="opt"><input type="radio" name="sale" id="sale-saumon" value="Le Saumon du Chef">
+          <label class="opt"><input type="checkbox" name="sale" id="sale-saumon" value="Le Saumon du Chef">
             <div class="opt-body"><span class="mark"></span><span class="opt-name">Le Saumon du Chef</span><span class="price">1 bisou</span>
               <span class="desc">Pavé de saumon bien grillé sur avocat écrasé au citron, burrata crémeuse, deux triangles de brioche toastée, roquette et zeste de citron.</span></div></label>
-          <label class="opt"><input type="radio" name="sale" id="sale-riviera" value="Le Riviera">
+          <label class="opt"><input type="checkbox" name="sale" id="sale-riviera" value="Le Riviera">
             <div class="opt-body"><span class="mark"></span><span class="opt-name">Le Riviera</span><span class="price">1 bisou</span>
               <span class="desc">Baguette aux graines toastée, farce thon-mayo aux herbes fraîches, tomate, mozzarella di bufala, roquette et basilic.</span></div></label>
         </div>
@@ -186,14 +186,14 @@ footer { text-align: center; color: var(--muted); font-size: 13px; }
       <section>
         <div class="sec-head"><h2>Sucré</h2><small>pour finir</small></div>
         <div class="opts">
-          <label class="opt"><input type="radio" name="sucre" id="sucre-croissant" value="Croissant Gourmand">
+          <label class="opt"><input type="checkbox" name="sucre" id="sucre-croissant" value="Croissant Gourmand">
             <div class="opt-body"><span class="mark"></span><span class="opt-name">Croissant Gourmand</span><span class="price">1 bisou</span>
-              <span class="desc">Croissant tiède et croustillant, nappé de coulis de chocolat maison.</span>
-              <span class="extras">
-                <label class="chip"><input type="checkbox" id="x-glace" name="extra" value="glace vanille" checked> Glace vanille</label>
-                <label class="chip"><input type="checkbox" id="x-chantilly" name="extra" value="chantilly" checked> Chantilly</label>
-              </span></div></label>
-          <label class="opt"><input type="radio" name="sucre" id="sucre-brioche" value="Brioche Perdue">
+              <span class="desc">Croissant tiède et croustillant, nappé de coulis de chocolat maison.</span></div></label>
+          <div class="extras">
+            <label class="chip"><input type="checkbox" id="x-glace" name="extra" value="glace vanille" checked> Glace vanille</label>
+            <label class="chip"><input type="checkbox" id="x-chantilly" name="extra" value="chantilly" checked> Chantilly</label>
+          </div>
+          <label class="opt"><input type="checkbox" name="sucre" id="sucre-brioche" value="Brioche Perdue">
             <div class="opt-body"><span class="mark"></span><span class="opt-name">Brioche Perdue</span><span class="price">1 bisou</span>
               <span class="desc">Épaisse tranche de brioche dorée au beurre, filet de caramel beurre salé, fruits rouges, boule de glace vanille.</span></div></label>
         </div>
@@ -224,23 +224,26 @@ footer { text-align: center; color: var(--muted); font-size: 13px; }
   const zone = document.getElementById("ticket-zone");
   const groups = [["chaud", "Boisson chaude"], ["frais", "Boisson fraîche"], ["sale", "Salé"], ["sucre", "Sucré"]];
 
-  function val(name) { const el = form.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : null; }
+  function vals(name) { return [...form.querySelectorAll('input[name="' + name + '"]:checked')].map(e => e.value); }
+  function count() { return groups.reduce((n, [k]) => n + vals(k).length, 0); }
 
   function read() {
     const o = {};
-    groups.forEach(([k]) => { o[k] = val(k); });
-    if (o.sucre === "Croissant Gourmand") {
-      const ex = [...form.querySelectorAll('input[name="extra"]:checked')].map(e => e.value);
-      o.sucre += ex.length ? " avec " + ex.join(" et ") : " (nature)";
+    groups.forEach(([k]) => { o[k] = vals(k); });
+    const i = o.sucre.indexOf("Croissant Gourmand");
+    if (i >= 0) {
+      const ex = vals("extra");
+      o.sucre[i] += ex.length ? " avec " + ex.join(" et ") : " (nature)";
     }
     o.note = document.getElementById("note").value.trim();
+    o.total = count();
     return o;
   }
 
   function refresh() {
-    const missing = groups.filter(([k]) => !val(k)).length;
-    btn.disabled = missing > 0;
-    hint.textContent = missing ? (missing === 1 ? "Plus qu'un service à choisir." : "Choisis un plat dans chaque service.") : "Le chef est prêt.";
+    const n = count();
+    btn.disabled = n === 0;
+    hint.textContent = n ? n + (n === 1 ? " plat choisi. " : " plats choisis. ") + "Le chef est prêt." : "Choisis tout ce qui te fait envie.";
   }
   form.addEventListener("change", refresh);
 
@@ -252,9 +255,9 @@ footer { text-align: center; color: var(--muted); font-size: 13px; }
       '<div class="ticket">' +
         '<div class="eyebrow" style="text-align:center">Bon de commande</div>' +
         '<h2>Merci !</h2>' +
-        '<div class="t-meta"><span>Table n°1</span><span>Couverts : 1</span><span>' + hhmm(when) + '</span></div>' +
+        '<div class="t-meta"><span>Table n°1</span><span>Total : ' + o.total + (o.total === 1 ? ' bisou' : ' bisous') + '</span><span>' + hhmm(when) + '</span></div>' +
         '<ul class="t-lines">' +
-          groups.map(([k, label]) => '<li><span>' + label + '</span><b>' + esc(o[k]) + '</b></li>').join("") +
+          groups.filter(([k]) => o[k].length).map(([k, label]) => '<li><span>' + label + '</span>' + o[k].map(v => '<b>' + esc(v) + '</b>').join("") + '</li>').join("") +
         '</ul>' +
         (o.note ? '<div class="t-note">« ' + esc(o.note) + ' »</div>' : "") +
         '<div class="t-status">Annonce ta commande au chef, il s\'occupe de tout.</div>' +
